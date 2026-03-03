@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   'ellisonleao/gruvbox.nvim',
   priority = 1000,

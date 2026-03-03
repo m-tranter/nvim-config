@@ -3,6 +3,12 @@ return {
     { import = 'plugins' },
     { 'ethanholz/nvim-lastplace', opts = {} },
     {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      opts = {
+        enable_autocmd = true,
+      },
+    },
+    {
       'mrcjkb/rustaceanvim',
       lazy = true,
     },

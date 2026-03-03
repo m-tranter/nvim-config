@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-global
+
 return { -- Autocompletion
   'saghen/blink.cmp',
   event = 'VimEnter',

@@ -1,6 +1,8 @@
 return {
   'nvim-treesitter/nvim-treesitter',
   lazy = false,
+  priority = 1000,
+  build = ':TSUpdate',
   opts = {
     ensure_installed = {
       'javascript',
@@ -17,8 +19,11 @@ return {
       'query',
       'vim',
       'vimdoc',
+      'vue',
     },
+    highlight = {
+      enable = true,
+    },
+    auto_install = true,
   },
-  auto_install = false,
-  build = ':TSUpdate',
 }
