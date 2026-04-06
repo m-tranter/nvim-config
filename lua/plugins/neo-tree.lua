@@ -15,6 +15,10 @@ return {
   },
   config = function()
     require('neo-tree').setup {
+      filesystem = {
+        commands = {},
+        window = {},
+      },
       close_if_last_window = true,
       window = {
         width = 24,

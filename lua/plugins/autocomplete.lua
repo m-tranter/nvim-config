@@ -1,5 +1,4 @@
 ---@diagnostic disable: undefined-global
-
 return { -- Autocompletion
   'saghen/blink.cmp',
   event = 'VimEnter',
@@ -18,7 +17,6 @@ return { -- Autocompletion
   --- @module 'blink.cmp'
   --- @type blink.cmp.Config
   opts = {
-
     keymap = {
       -- 'default' (recommended) for mappings similar to built-in completions
       --   <c-y> to accept ([y]es) the completion.
@@ -62,6 +60,7 @@ return { -- Autocompletion
     sources = {
       default = { 'lsp', 'path', 'snippets', 'lazydev' },
       providers = {
+
         lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
       },
     },

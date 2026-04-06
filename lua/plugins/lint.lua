@@ -1,5 +1,4 @@
 return {
-
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -9,7 +8,7 @@ return {
         html = { 'htmlhint' },
         bash = { 'shfmt' },
         css = { 'stylelint' },
-        python = { 'ruff' }, -- Python linting
+        python = { 'ruff' },
       }
 
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })

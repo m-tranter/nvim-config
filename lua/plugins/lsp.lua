@@ -2,10 +2,17 @@ return {
   -- Main LSP Configuration
   'neovim/nvim-lspconfig',
   dependencies = {
-    { 'mason-org/mason.nvim', opts = {} },
+    {
+      'mason-org/mason.nvim',
+      opts = {
+        registries = {
+          'github:mason-org/mason-registry',
+          'github:Crashdummyy/mason-registry',
+        },
+      },
+    },
     'mason-org/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    -- Allows extra capabilities provided by blink.cmp
     'saghen/blink.cmp',
   },
   config = function()
@@ -73,10 +80,6 @@ return {
             end,
           })
         end
-        -- The following code creates a keymap to toggle inlay hints in your
-        -- code, if the language server you are using supports them
-        --
-        -- This may be unwanted, since they displace some of your code
         if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
           map('<leader>th', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
@@ -113,10 +116,30 @@ return {
     local capabilities = require('blink.cmp').get_lsp_capabilities()
     local servers = {
       ruff = { filetypes = { 'python' } },
-      html = { filetypes = { 'html' } },
+      html = { filetypes = { 'html', 'razor', 'cshtml' } },
       vtsls = { filetypes = { 'typescript', 'javascript' } },
-      ts_ls = { filetypes = { 'vue' } },
+      -- ts_ls = { filetypes = { 'vue' } },
+      vue_ls = { filetypes = 'vue' },
       cssls = { filetypes = { 'css' } },
+      emmet_language_server = {
+        filetypes = { 'html', 'razor', 'html', 'css', 'vue', 'javascriptreact', 'typescriptreact' },
+        init_options = {
+          variables = { lang = 'en' },
+          html = {
+            snippets = {
+              ['html:5'] = '<!DOCTYPE html>\n'
+                .. '<html lang="${lang}">\n'
+                .. '<head>\n'
+                .. '\t<meta charset="${charset}"/>\n'
+                .. '\t<meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
+                .. '\t<title>Change me</title>\n'
+                .. '</head>\n'
+                .. '<body>\n\t${child}|\n</body>\n'
+                .. '</html>',
+            },
+          },
+        },
+      },
       eslint = {
         settings = {
           packageManager = 'yarn',
@@ -139,10 +162,22 @@ return {
         },
       },
     }
-    local ensure_installed = vim.tbl_keys(servers or {})
     local mason_path = vim.fn.stdpath 'data' .. '/mason'
     local vue_plugin_path = mason_path .. '/packages/vue-language-server/node_modules/@vue/language-server'
-
+    vim.lsp.config('roslyn', {
+      on_attach = function()
+        print 'This will run when the server attaches!'
+      end,
+      settings = {
+        ['csharp|inlay_hints'] = {
+          csharp_enable_inlay_hints_for_implicit_object_creation = true,
+          csharp_enable_inlay_hints_for_implicit_variable_types = true,
+        },
+        ['csharp|code_lens'] = {
+          dotnet_enable_references_code_lens = true,
+        },
+      },
+    })
     if vim.fn.isdirectory(vue_plugin_path) == 1 then
       vim.lsp.config('ts_ls', {
         init_options = {
@@ -157,18 +192,36 @@ return {
         filetypes = { 'vue' },
       })
     end
-
+    local ensure_installed = {
+      'bashls',
+      'cssls',
+      'emmet_language_server',
+      'eslint',
+      'html',
+      'htmlhint',
+      'lua_ls',
+      'markdownlint',
+      'prettierd',
+      'pyright',
+      'roslyn',
+      'ruff',
+      'rust_analyzer',
+      'shfmt',
+      'stylelint',
+      'stylua',
+      'ts_ls',
+      'vtsls',
+      'vue_ls',
+      'xmlformatter',
+    }
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
     require('mason-lspconfig').setup {
-      ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+      ensure_installed = {}, -- explicitly set to an empty table installs done via mason-tool-installer
       automatic_installation = false,
       automatic_enable = true,
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for ts_ls)
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
           require('lspconfig')[server_name].setup(server)
         end,

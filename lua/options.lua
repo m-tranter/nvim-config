@@ -1,11 +1,9 @@
 ---@diagnostic disable: undefined-global
 
--- vim.g.gruvbox_contrast_dark = 'hard'
 vim.o.clipboard = 'unnamedplus'
 vim.g.have_nerd_font = true
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.g.user_emmet_leader_key = ','
 vim.o.breakindent = true
 vim.o.confirm = true
 vim.o.cursorline = true
