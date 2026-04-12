@@ -51,6 +51,7 @@ return {
         --  Useful when you're not sure what type a variable is and you want to see
         --  the definition of its *type*, not where it was *defined*.
         map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+        map('K', vim.lsp.buf.hover, 'Hover documentation')
         -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
         ---@param client vim.lsp.Client
         ---@param method vim.lsp.protocol.Method
@@ -87,42 +88,41 @@ return {
         end
       end,
     })
-    vim.diagnostic.config {
-      severity_sort = true,
-      float = { border = 'rounded', source = 'if_many' },
-      underline = { severity = vim.diagnostic.severity.ERROR },
-      signs = vim.g.have_nerd_font and {
-        text = {
-          [vim.diagnostic.severity.ERROR] = '󰅚 ',
-          [vim.diagnostic.severity.WARN] = '󰀪 ',
-          [vim.diagnostic.severity.INFO] = '󰋽 ',
-          [vim.diagnostic.severity.HINT] = '󰌶 ',
-        },
-      } or {},
-      virtual_text = {
-        source = 'if_many',
-        spacing = 2,
-        format = function(diagnostic)
-          local diagnostic_message = {
-            [vim.diagnostic.severity.ERROR] = diagnostic.message,
-            [vim.diagnostic.severity.WARN] = diagnostic.message,
-            [vim.diagnostic.severity.INFO] = diagnostic.message,
-            [vim.diagnostic.severity.HINT] = diagnostic.message,
-          }
-          return diagnostic_message[diagnostic.severity]
-        end,
-      },
-    }
+    -- vim.diagnostic.config {
+    --   severity_sort = true,
+    --   float = { border = 'rounded', source = 'if_many' },
+    --   underline = { severity = vim.diagnostic.severity.ERROR },
+    --   signs = vim.g.have_nerd_font and {
+    --     text = {
+    --       [vim.diagnostic.severity.ERROR] = '󰅚 ',
+    --       [vim.diagnostic.severity.WARN] = '󰀪 ',
+    --       [vim.diagnostic.severity.INFO] = '󰋽 ',
+    --       [vim.diagnostic.severity.HINT] = '󰌶 ',
+    --     },
+    --   } or {},
+    --   virtual_text = {
+    --     source = 'if_many',
+    --     spacing = 2,
+    --     format = function(diagnostic)
+    --       local diagnostic_message = {
+    --         [vim.diagnostic.severity.ERROR] = diagnostic.message,
+    --         [vim.diagnostic.severity.WARN] = diagnostic.message,
+    --         [vim.diagnostic.severity.INFO] = diagnostic.message,
+    --         [vim.diagnostic.severity.HINT] = diagnostic.message,
+    --       }
+    --       return diagnostic_message[diagnostic.severity]
+    --     end,
+    --   },
+    -- }
     local capabilities = require('blink.cmp').get_lsp_capabilities()
     local servers = {
       ruff = { filetypes = { 'python' } },
       html = { filetypes = { 'html', 'razor', 'cshtml' } },
-      vtsls = { filetypes = { 'typescript', 'javascript' } },
-      -- ts_ls = { filetypes = { 'vue' } },
+      vtsls = { filetypes = { 'vue', 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' } },
       vue_ls = { filetypes = 'vue' },
       cssls = { filetypes = { 'css' } },
       emmet_language_server = {
-        filetypes = { 'html', 'razor', 'html', 'css', 'vue', 'javascriptreact', 'typescriptreact' },
+        filetypes = { 'razor', 'html', 'css', 'vue', 'javascriptreact', 'typescriptreact' },
         init_options = {
           variables = { lang = 'en' },
           html = {
@@ -164,6 +164,19 @@ return {
     }
     local mason_path = vim.fn.stdpath 'data' .. '/mason'
     local vue_plugin_path = mason_path .. '/packages/vue-language-server/node_modules/@vue/language-server'
+    if vim.fn.isdirectory(vue_plugin_path) == 1 then
+      vim.lsp.config('vtsls', {
+        init_options = {
+          plugins = {
+            {
+              name = '@vue/typescript-plugin',
+              location = vue_plugin_path,
+              languages = { 'vue' },
+            },
+          },
+        },
+      })
+    end
     vim.lsp.config('roslyn', {
       on_attach = function()
         print 'This will run when the server attaches!'
@@ -178,20 +191,6 @@ return {
         },
       },
     })
-    if vim.fn.isdirectory(vue_plugin_path) == 1 then
-      vim.lsp.config('ts_ls', {
-        init_options = {
-          plugins = {
-            {
-              name = '@vue/typescript-plugin',
-              location = vue_plugin_path,
-              languages = { 'vue' },
-            },
-          },
-        },
-        filetypes = { 'vue' },
-      })
-    end
     local ensure_installed = {
       'bashls',
       'cssls',
@@ -203,13 +202,10 @@ return {
       'markdownlint',
       'prettierd',
       'pyright',
-      'roslyn',
       'ruff',
-      'rust_analyzer',
       'shfmt',
       'stylelint',
       'stylua',
-      'ts_ls',
       'vtsls',
       'vue_ls',
       'xmlformatter',

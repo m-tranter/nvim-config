@@ -1,6 +1,12 @@
 return {
   'olimorris/codecompanion.nvim',
-  lazy = true,
+  cmd = 'CodeCompanion',
+  keys = {
+    { '<Leader>ci', '<cmd>CodeCompanion<cr>', mode = { 'n', 'v' }, desc = 'Inline code companion' },
+    { '<C-a>', '<cmd>CodeCompanionActions<cr>', mode = { 'n', 'v' }, desc = 'CC actions' },
+    { '<Leader>i', '<cmd>CodeCompanionChat Toggle<cr>', mode = { 'n', 'v' }, desc = 'CC chat' },
+    { 'ga', '<cmd>CodeCompanionChat Add<cr>', mode = 'v', desc = 'Send selection to CC' },
+  },
   dependencies = {
     'ravitemer/mcphub.nvim',
     'nvim-lua/plenary.nvim',

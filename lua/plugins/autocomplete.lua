@@ -1,18 +1,14 @@
 ---@diagnostic disable: undefined-global
 return { -- Autocompletion
   'saghen/blink.cmp',
-  event = 'VimEnter',
+  event = 'InsertEnter',
   version = '1.*',
   dependencies = {
     {
       'L3MON4D3/LuaSnip',
       version = '2.*',
-      build = (function()
-        return 'make install_jsregexp'
-      end)(),
-      dependencies = {},
+      build = 'make install_jsregexp',
     },
-    'folke/lazydev.nvim',
   },
   --- @module 'blink.cmp'
   --- @type blink.cmp.Config
@@ -65,7 +61,7 @@ return { -- Autocompletion
       },
     },
     snippets = { preset = 'luasnip' },
-    fuzzy = { implementation = 'prefer_rust_with_warning' },
+    fuzzy = { implementation = 'prefer_rust' },
     signature = { enabled = true },
   },
 }

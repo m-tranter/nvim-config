@@ -6,9 +6,10 @@ return {
       local lint = require 'lint'
       lint.linters_by_ft = {
         html = { 'htmlhint' },
-        bash = { 'shfmt' },
+        bash = { 'shellcheck' },
         css = { 'stylelint' },
         python = { 'ruff' },
+        markdown = { 'markdownlint' },
       }
 
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })

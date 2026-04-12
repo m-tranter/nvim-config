@@ -7,6 +7,7 @@ return {
   config = function()
     require('mcphub').setup {
       config = vim.fn.expand '~/.config/mcphub/servers.json',
+      cmd = vim.fn.expand '/home/mark/.nvm/versions/node/v24.11.1/bin/mcp-hub',
       builtin_tools = {
         edit_file = {
           parser = {

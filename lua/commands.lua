@@ -2,16 +2,15 @@
 
 -- Spelling
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'markdown', 'text', 'tex', 'gitcommit' },
-  callback = function()
-    vim.opt_local.spell = true
-  end,
+  pattern = { 'text', 'tex', 'gitcommit' },
+  callback = function() end,
 })
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown',
   callback = function()
     vim.opt_local.conceallevel = 2
+    vim.opt_local.spell = true
   end,
 })
 
@@ -43,4 +42,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
-vim.cmd [[cab cc CodeCompanion]]
+vim.cmd [[cnoreabbrev cc CodeCompanion]]

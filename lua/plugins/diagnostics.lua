@@ -8,14 +8,14 @@ return {
         multilines = true, -- wraps long messages
         show_source = true,
         transparent_bg = false,
-        softwrap = 10,
+        softwrap = 30,
         overflow = {
           mode = 'wrap', -- "wrap": split into lines, "none": no truncation, "oneline": keep single line
-          padding = 0, -- Extra characters to trigger wrapping earlier
+          padding = 4, -- Extra characters to trigger wrapping earlier
         },
         break_line = {
           enabled = true, -- Enable automatic line breaking
-          after = 30, -- Number of characters before inserting a line break
+          after = 60, -- Number of characters before inserting a line break
         },
         add_messages = {
           messages = true, -- Show full diagnostic messages
@@ -24,6 +24,7 @@ return {
           show_multiple_glyphs = false, -- Show multiple icons for multiple diagnostics of same severity
         },
         severity = {
+          vim.diagnostic.severity.WARN,
           vim.diagnostic.severity.ERROR,
         },
       },
