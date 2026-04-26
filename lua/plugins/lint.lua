@@ -8,10 +8,14 @@ local lint = require("lint")
 lint.linters_by_ft = {
 	html = { "htmlhint" },
 	css = { "stylelint" },
-	python = { "ruff" },
 	markdown = { "markdownlint" },
+	javascript = { "biome" },
+	typescript = { "biome" },
+	javascriptreact = { "biome" },
+	typescriptreact = { "biome" },
+	json = { "biome" },
+	jsonc = { "biome" },
 }
-
 local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 	group = lint_augroup,

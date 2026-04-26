@@ -2,6 +2,8 @@
 local opt = vim.opt
 vim.fs.root(0, { ".git", "package.json", "*.sln" })
 vim.g.have_nerd_font = true
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 opt.autochdir = false -- Don't auto change directory
 opt.autoindent = true -- Copy indent from current line
 opt.autoread = true -- Auto reload files changed outside vim
@@ -57,7 +59,6 @@ opt.shiftwidth = 2 -- Indent width
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.showmatch = true -- Highlight matching brackets
 opt.showmode = false -- Don't show mode in command line
---opt.sidescrolloff = 8 -- Keep 8 columns left/right of cursor
 opt.signcolumn = "yes" -- Always show sign column
 opt.smartcase = true -- Case sensitive if uppercase in search
 opt.smartindent = true -- Smart auto-indenting
@@ -83,7 +84,7 @@ opt.wildmenu = true
 opt.wildmode = "longest:full,full"
 opt.winblend = 0 -- Floating window transparency
 opt.winminwidth = 5 -- Minimum window width
-opt.wrap = false -- Don't wrap lines
+opt.wrap = true
 opt.writebackup = false -- Don't create backup before writing
 vim.g.autoformat = true
 vim.g.markdown_recommended_style = 0

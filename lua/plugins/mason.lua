@@ -83,11 +83,10 @@ local servers = {
 			},
 		},
 	},
-	ruff = { filetypes = { "python" } },
 	jsonls = { filetypes = { "json", "jsonc" } },
 	html = { filetypes = { "html", "razor", "cshtml" } },
-	vtsls = { filetypes = { "vue", "typescript", "javascript", "typescriptreact", "javascriptreact" } },
-	vue_ls = { filetypes = "vue" },
+	vtsls = { filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" } },
+	vue_ls = { filetypes = { "vue" } },
 	cssls = { filetypes = { "css" } },
 	tailwindcss = {
 		root_dir = require("lspconfig.util").root_pattern("postcss.config.js", "postcss.config.ts"),
@@ -110,17 +109,6 @@ local servers = {
 				},
 			},
 		},
-	},
-	eslint = {
-		settings = {
-			packageManager = "yarn",
-		},
-		on_attach = function(client, bufnr)
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				buffer = bufnr,
-				command = "EslintFixAll",
-			})
-		end,
 	},
 	lua_ls = {
 		settings = {
@@ -170,14 +158,11 @@ require("mason-tool-installer").setup({
 		"bashls",
 		"cssls",
 		"emmet_language_server",
-		"eslint",
 		"html",
 		"htmlhint",
 		"lua_ls",
 		"markdownlint",
 		"prettierd",
-		"pyright",
-		"ruff",
 		"shfmt",
 		"stylelint",
 		"stylua",

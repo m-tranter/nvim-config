@@ -12,6 +12,7 @@ require("plugins.mini")
 require("plugins.neo-tree")
 require("plugins.obsidian")
 require("plugins.racket")
+require("plugins.rust")
 require("plugins.telescope")
 require("plugins.theme")
 require("plugins.treesitter")
@@ -30,5 +31,3 @@ require("fidget").setup()
 require("nvim-ts-autotag").setup()
 require("ts-comments").setup()
 require("roslyn").setup()
-
--- "https://github.com/mrcjkb/rustaceanvim",

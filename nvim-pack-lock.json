@@ -69,10 +69,6 @@
       "rev": "5cfe7fffbd01e17b3c1e14af85d5febdef88bd8c",
       "src": "https://github.com/nvchad/nvim-colorizer.lua"
     },
-    "nvim-emmet": {
-      "rev": "cde4fb2968704aae5c18b7f8a9bc2508767bb78d",
-      "src": "https://github.com/olrtg/nvim-emmet"
-    },
     "nvim-lint": {
       "rev": "eab58b48eb11d7745c11c505e0f3057165902461",
       "src": "https://github.com/mfussenegger/nvim-lint"

@@ -22,3 +22,4 @@ vim.g["conjure#log#hud#enabled"] = true
 vim.g["conjure#log#hud#anchor"] = "SE"
 vim.g["conjure#log#hud#max_height"] = 0.4
 vim.g["conjure#log#wrap"] = true
+vim.api.nvim_set_hl(0, "ConjureHUDNormal", { link = "Normal" })

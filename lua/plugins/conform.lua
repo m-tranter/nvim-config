@@ -10,12 +10,11 @@ require("conform").setup({
 		json = { "biome", "prettierd", stop_after_first = true },
 		lua = { "stylua" },
 		markdown = { "prettierd" },
-		python = { "ruff_format" },
 		sh = { "shfmt" },
 		toml = { "taplo" },
 		typescript = { "biome", "prettierd", stop_after_first = true },
 		typescriptreact = { "biome", "prettierd", stop_after_first = true },
-		vue = { "prettierd" },
+		vue = { "biome", "prettierd", stop_after_first = true },
 		xml = { "xmlformatter" },
 	},
 	default_format_opts = {

@@ -95,6 +95,7 @@ map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 -- Better paste (doesn't replace clipboard with deleted text)
+map("v", "P", '"_dP', opts)
 map("v", "p", '"_dP', opts)
 -- Copy whole file to clipboard
 map("n", "<C-c>", ":%y+<CR>", opts)
