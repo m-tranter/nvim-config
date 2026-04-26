@@ -76,6 +76,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 local servers = {
+	biome = {
+		filetypes = {
+			"javascript",
+			"typescript",
+			"javascriptreact",
+			"typescriptreact",
+			"json",
+			"jsonc",
+		},
+		root_dir = function(fname)
+			return require("lspconfig.util").root_pattern("biome.json", "biome.jsonc", "package.json")(fname)
+				or vim.fn.fnamemodify(fname, ":h") -- fallback so it works outside projects
+		end,
+	},
 	bashls = {
 		settings = {
 			bashIde = {
@@ -83,9 +97,21 @@ local servers = {
 			},
 		},
 	},
-	jsonls = { filetypes = { "json", "jsonc" } },
+	jsonls = {
+		filetypes = { "json", "jsonc" },
+		settings = {
+			json = {
+				validate = { enable = true },
+			},
+		},
+		-- disable formatting, biome handles that
+		on_attach = function(client)
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
+		end,
+	},
 	html = { filetypes = { "html", "razor", "cshtml" } },
-	vtsls = { filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" } },
+	vtsls = { filetypes = { "vue", "typescript", "javascript", "typescriptreact", "javascriptreact" } },
 	vue_ls = { filetypes = { "vue" } },
 	cssls = { filetypes = { "css" } },
 	tailwindcss = {
