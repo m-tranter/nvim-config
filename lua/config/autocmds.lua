@@ -32,6 +32,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		(vim.hl or vim.highlight).on_yank()
 	end,
 })
+
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
 	group = augroup("resize_splits"),
@@ -41,6 +42,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 		vim.cmd("tabnext " .. current_tab)
 	end,
 })
+
 -- make it easier to close man-files when opened inline
 vim.api.nvim_create_autocmd("FileType", {
 	group = augroup("man_unlisted"),
@@ -49,6 +51,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.bo[event.buf].buflisted = false
 	end,
 })
+
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
 	group = augroup("close_with_q"),

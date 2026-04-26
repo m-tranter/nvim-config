@@ -12,6 +12,10 @@
       "rev": "dca1a190aa85f9065979ef35802fb77131911106",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "conjure": {
+      "rev": "2ddd752d43b35d72aa3e339c3ae051b8dbad8549",
+      "src": "https://github.com/Olical/conjure"
+    },
     "diffview.nvim": {
       "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
       "src": "https://github.com/sindrets/diffview.nvim"
@@ -103,6 +107,10 @@
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
+    "roslyn.nvim": {
+      "rev": "b62d1a588765f0aa1b46ed260252c9e456408835",
+      "src": "https://github.com/seblyng/roslyn.nvim"
+    },
     "rustaceanvim": {
       "rev": "07f0900627f1bb2fc9ee8b5e39bb96fe40c2e0a1",
       "src": "https://github.com/mrcjkb/rustaceanvim"
@@ -122,6 +130,10 @@
     "ts-comments.nvim": {
       "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
       "src": "https://github.com/folke/ts-comments.nvim"
+    },
+    "vim-fugitive": {
+      "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",
+      "src": "https://github.com/tpope/vim-fugitive"
     }
   }
 }

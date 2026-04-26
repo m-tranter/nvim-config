@@ -36,11 +36,8 @@ vim.diagnostic.config({
 			[sev.HINT] = "󰌵 ",
 		},
 	},
-	virtual_text = {
-		spacing = 4,
-		source = "if_many",
-		prefix = "●",
-	},
+	virtual_lines = { current_line = true },
+
 	-- NEW in 0.11 — dim whole line
 	linehl = {
 		[sev.ERROR] = "DiagnosticErrorLine",
