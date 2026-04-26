@@ -1,18 +1,9 @@
----@diagnostic disable: undefined-global
-require 'options'
-require 'mappings'
-require 'commands'
--- Lazy
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
-  end
-end
-local rtp = vim.opt.rtp
-rtp:prepend(lazypath)
-require('lazy').setup(require 'lazy_opts')
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- vim: ts=2 sts=2 sw=2 et
+require("config") -- Load configs first
+require("plugins") -- Then load plugins
+require("config.options")
+require("config.keymaps")
+require("config.diagnostics")
+require("config.autocmds")

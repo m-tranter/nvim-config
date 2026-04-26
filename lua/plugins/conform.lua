@@ -1,44 +1,71 @@
-return { -- Autoformat
-  'stevearc/conform.nvim',
-  event = { 'BufWritePre' },
-  cmd = { 'ConformInfo' },
-  keys = {
-    {
-      '<leader>f',
-      function()
-        require('conform').format { async = true, lsp_format = 'fallback' }
-      end,
-      mode = '',
-      desc = '[F]ormat buffer',
-    },
-  },
-  opts = {
-    notify_on_error = false,
-    format_on_save = function(bufnr)
-      local disable_filetypes = { razor = true, c = true, cpp = true }
-      if disable_filetypes[vim.bo[bufnr].filetype] then
-        return nil
-      else
-        return {
-          timeout_ms = 10000,
-          lsp_format = 'fallback',
-        }
-      end
-    end,
-    formatters_by_ft = {
-      lua = { 'stylua' },
-      html = { 'prettierd' },
-      css = { 'prettierd' },
-      vue = { 'prettierd' },
-      javascript = { 'prettierd' },
-      javascriptreact = { 'prettierd' },
-      typescript = { 'prettierd' },
-      typescriptreact = { 'prettierd' },
-      json = { 'prettierd' },
-      markdown = { 'prettierd' },
-      python = { 'ruff_format' },
-      sh = { 'shfmt' },
-      xml = { 'xmlformatter' },
-    },
-  },
-}
+---@diagnostic disable: undefined-global
+vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
+require("conform").setup({
+	formatters_by_ft = {
+		css = { "prettierd" },
+		html = { "prettierd" },
+		javascript = { "biome", "prettierd", stop_after_first = true },
+		javascriptreact = { "biome", "prettierd", stop_after_first = true },
+		jsonc = { "biome", "prettierd", stop_after_first = true },
+		json = { "biome", "prettierd", stop_after_first = true },
+		lua = { "stylua" },
+		markdown = { "prettierd" },
+		python = { "ruff_format" },
+		sh = { "shfmt" },
+		toml = { "taplo" },
+		typescript = { "biome", "prettierd", stop_after_first = true },
+		typescriptreact = { "biome", "prettierd", stop_after_first = true },
+		vue = { "prettierd" },
+		xml = { "xmlformatter" },
+	},
+	default_format_opts = {
+		lsp_format = "fallback",
+	},
+	format_on_save = function(bufnr)
+		local ignore_filetypes = { "sql", "yaml", "yml" }
+		if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
+			return
+		end
+		if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+			return
+		end
+		local bufname = vim.api.nvim_buf_get_name(bufnr)
+		if bufname:match("/node_modules/") then
+			return
+		end
+		return { timeout_ms = 500, lsp_format = "fallback" }
+	end,
+})
+vim.api.nvim_create_user_command("FormatDisable", function(opts)
+	if opts.bang then
+		vim.b.disable_autoformat = true
+	else
+		vim.g.disable_autoformat = true
+	end
+	vim.notify("Autoformat disabled" .. (opts.bang and " (buffer)" or " (global)"), vim.log.levels.WARN)
+end, { desc = "Disable autoformat-on-save", bang = true })
+vim.api.nvim_create_user_command("FormatEnable", function()
+	vim.b.disable_autoformat = false
+	vim.g.disable_autoformat = false
+	vim.notify("Autoformat enabled", vim.log.levels.INFO)
+end, { desc = "Re-enable autoformat-on-save" })
+local auto_format = true
+vim.keymap.set("n", "<leader>uf", function()
+	auto_format = not auto_format
+	if auto_format then
+		vim.cmd("FormatEnable")
+	else
+		vim.cmd("FormatDisable")
+	end
+end, { desc = "Toggle Autoformat" })
+vim.keymap.set({ "n", "v" }, "<leader>cn", "<cmd>ConformInfo<cr>", { desc = "Conform Info" })
+vim.keymap.set({ "n", "v" }, "<leader>cf", function()
+	require("conform").format({ async = true }, function(err, did_edit)
+		if not err and did_edit then
+			vim.notify("Code formatted", vim.log.levels.INFO, { title = "Conform" })
+		end
+	end)
+end, { desc = "Format buffer" })
+vim.keymap.set({ "n", "v" }, "<leader>cF", function()
+	require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
+end, { desc = "Format Injected Langs" })

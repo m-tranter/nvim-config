@@ -1,37 +1,28 @@
--- Neo-tree is a Neovim plugin to browse the file system
--- https://github.com/nvim-neo-tree/neo-tree.nvim
+---@diagnostic disable: undefined-global
+vim.pack.add({
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/nvim-tree/nvim-web-devicons",
+	"https://github.com/MunifTanjim/nui.nvim",
+	{
+		src = "https://github.com/nvim-neo-tree/neo-tree.nvim",
+		version = "*",
+	},
+})
 
-return {
-  'nvim-neo-tree/neo-tree.nvim',
-  version = '*',
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-    'MunifTanjim/nui.nvim',
-  },
-  keys = {
-    { '<C-n>', '<cmd>Neotree toggle<cr>', desc = 'Neotree' },
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
-  },
-  config = function()
-    require('neo-tree').setup {
-      filesystem = {
-        commands = {},
-        window = {},
-      },
-      close_if_last_window = true,
-      window = {
-        width = 24,
-      },
-    }
-  end,
-  opts = {
-    filesystem = {
-      window = {
-        mappings = {
-          ['\\'] = 'close_window',
-        },
-      },
-    },
-  },
-}
+require("neo-tree").setup({
+	filesystem = {
+		commands = {},
+		window = {
+			mappings = {
+				["\\"] = "close_window",
+			},
+		},
+	},
+	close_if_last_window = true,
+	window = {
+		width = 24,
+	},
+})
+
+vim.keymap.set("n", "<C-n>", "<cmd>Neotree toggle<cr>", { desc = "Neotree" })
+vim.keymap.set("n", "\\", ":Neotree reveal<CR>", { desc = "NeoTree reveal", silent = true })
