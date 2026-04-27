@@ -11,6 +11,7 @@ vim.g["conjure#filetype#clojure"] = false
 vim.g["conjure#filetype#fennel"] = false
 vim.g["conjure#filetype#janet"] = false
 vim.g["conjure#filetype#hy"] = false
+vim.g["conjure#filetype#javascript"] = false
 vim.g["conjure#filetype#rust"] = false
 
 -- Racket client config

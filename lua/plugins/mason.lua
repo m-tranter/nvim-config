@@ -75,94 +75,107 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local capabilities = require("blink.cmp").get_lsp_capabilities()
-local servers = {
-	biome = {
-		filetypes = {
-			"javascript",
-			"typescript",
-			"javascriptreact",
-			"typescriptreact",
-			"json",
-			"jsonc",
-		},
-		root_dir = function(fname)
-			return require("lspconfig.util").root_pattern("biome.json", "biome.jsonc", "package.json")(fname)
-				or vim.fn.fnamemodify(fname, ":h") -- fallback so it works outside projects
-		end,
-	},
-	bashls = {
-		settings = {
-			bashIde = {
-				shellcheckArguments = { "--shell=bash", "--exclude=SC1090,SC1091" },
-			},
-		},
-	},
-	jsonls = {
-		filetypes = { "json", "jsonc" },
-		settings = {
-			json = {
-				validate = { enable = true },
-			},
-		},
-		-- disable formatting, biome handles that
-		on_attach = function(client)
-			client.server_capabilities.documentFormattingProvider = false
-			client.server_capabilities.documentRangeFormattingProvider = false
-		end,
-	},
-	html = { filetypes = { "html", "razor", "cshtml" } },
-	vtsls = { filetypes = { "vue", "typescript", "javascript", "typescriptreact", "javascriptreact" } },
-	vue_ls = { filetypes = { "vue" } },
-	cssls = { filetypes = { "css" } },
-	tailwindcss = {
-		root_dir = require("lspconfig.util").root_pattern("postcss.config.js", "postcss.config.ts"),
-	},
-	emmet_language_server = {
-		filetypes = { "razor", "html", "css", "vue", "javascriptreact", "typescriptreact" },
-		init_options = {
-			variables = { lang = "en" },
-			html = {
-				snippets = {
-					["html:5"] = "<!DOCTYPE html>\n"
-						.. '<html lang="${lang}">\n'
-						.. "<head>\n"
-						.. '\t<meta charset="${charset}"/>\n'
-						.. '\t<meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
-						.. "\t<title>Change me</title>\n"
-						.. "</head>\n"
-						.. "<body>\n\t${child}|\n</body>\n"
-						.. "</html>",
-				},
-			},
-		},
-	},
-	lua_ls = {
-		settings = {
-			Lua = {
-				completion = {
-					callSnippet = "Replace",
-				},
-				diagnostics = { disable = { "missing-fields" } },
-			},
-		},
-	},
-}
-
 local mason_path = vim.fn.stdpath("data") .. "/mason"
-local vue_plugin_path = mason_path .. "/packages/vue-language-server/node_modules/@vue/language-server"
-if vim.fn.isdirectory(vue_plugin_path) == 1 then
-	vim.lsp.config("vtsls", {
-		init_options = {
-			plugins = {
-				{
-					name = "@vue/typescript-plugin",
-					location = vue_plugin_path,
-					languages = { "vue" },
+
+-- Set capabilities globally (replaces the tbl_deep_extend in the old handler)
+vim.lsp.config("*", {
+	capabilities = capabilities,
+})
+
+vim.lsp.config("biome", {
+	filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+	root_markers = { "biome.json", "biome.jsonc", "package.json" },
+})
+
+vim.lsp.config("bashls", {
+	settings = {
+		bashIde = {
+			shellcheckArguments = { "--shell=bash", "--exclude=SC1090,SC1091" },
+		},
+	},
+})
+
+vim.lsp.config("jsonls", {
+	filetypes = { "json", "jsonc" },
+	settings = {
+		json = { validate = { enable = true } },
+	},
+})
+
+vim.lsp.config("html", {
+	filetypes = { "html", "razor", "cshtml" },
+})
+
+vim.lsp.config("cssls", {
+	filetypes = { "css" },
+})
+
+vim.lsp.config("tailwindcss", {
+	root_markers = { "postcss.config.js", "postcss.config.ts" },
+})
+
+vim.lsp.config("emmet_language_server", {
+	filetypes = { "razor", "html", "css", "vue", "javascriptreact", "typescriptreact" },
+	init_options = {
+		variables = { lang = "en" },
+		html = {
+			snippets = {
+				["html:5"] = "<!DOCTYPE html>\n"
+					.. '<html lang="${lang}">\n'
+					.. "<head>\n"
+					.. '\t<meta charset="${charset}"/>\n'
+					.. '\t<meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n'
+					.. "\t<title>Change me</title>\n"
+					.. "</head>\n"
+					.. "<body>\n\t${child}|\n</body>\n"
+					.. "</html>",
+			},
+		},
+	},
+})
+
+vim.lsp.config("lua_ls", {
+	settings = {
+		Lua = {
+			completion = { callSnippet = "Replace" },
+			diagnostics = { disable = { "missing-fields" } },
+		},
+	},
+})
+
+vim.lsp.config("vue_ls", {
+	filetypes = { "vue" },
+	init_options = {
+		typescript = {
+			tsdk = (function()
+				local project_ts = vim.fn.getcwd() .. "/node_modules/typescript/lib"
+				if vim.fn.isdirectory(project_ts) == 1 then
+					return project_ts
+				end
+				return mason_path .. "/packages/vtsls/node_modules/@vtsls/language-server/node_modules/typescript/lib"
+			end)(),
+		},
+	},
+})
+
+vim.lsp.config("vtsls", {
+	filetypes = { "vue", "typescript", "javascript", "typescriptreact", "javascriptreact" },
+	settings = {
+		vtsls = {
+			tsserver = {
+				globalPlugins = {
+					{
+						name = "@vue/typescript-plugin",
+						location = mason_path .. "/packages/vue-language-server/node_modules/@vue/language-server",
+						languages = { "vue" },
+						configNamespace = "typescript",
+						enableForWorkspaceTypeScriptVersions = true,
+					},
 				},
 			},
 		},
-	})
-end
+	},
+})
 
 vim.lsp.config("roslyn", {
 	on_attach = function()
@@ -179,34 +192,8 @@ vim.lsp.config("roslyn", {
 	},
 })
 
-require("mason-tool-installer").setup({
-	ensure_installed = {
-		"bashls",
-		"cssls",
-		"emmet_language_server",
-		"html",
-		"htmlhint",
-		"lua_ls",
-		"markdownlint",
-		"prettierd",
-		"shfmt",
-		"stylelint",
-		"stylua",
-		"vtsls",
-		"vue_ls",
-		"xmlformatter",
-	},
-})
-
 require("mason-lspconfig").setup({
 	ensure_installed = {},
 	automatic_installation = false,
 	automatic_enable = true,
-	handlers = {
-		function(server_name)
-			local server = servers[server_name] or {}
-			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-			require("lspconfig")[server_name].setup(server)
-		end,
-	},
 })

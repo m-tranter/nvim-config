@@ -36,8 +36,7 @@ require("nvim-treesitter").install({
 	"toml",
 	"tsx",
 	"typescript",
-	"vim",
-	"vimdoc",
+	"vue",
 	"xml",
 	"yaml",
 })
