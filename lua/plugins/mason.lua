@@ -132,33 +132,6 @@ vim.lsp.config("emmet_language_server", {
 			},
 		},
 	},
-	on_attach = function(client, bufnr)
-		vim.keymap.set("v", "<leader>ew", function()
-			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "x", false)
-			local start_row = vim.fn.line("'<") - 1
-			local start_col = vim.fn.col("'<") - 1
-			local end_row = vim.fn.line("'>") - 1
-			local end_col = vim.fn.col("'>")
-
-			vim.ui.input({ prompt = "Wrap with: " }, function(abbr)
-				if not abbr or abbr == "" then
-					return
-				end
-				client:exec_cmd({
-					command = "emmet.wrapWithAbbreviation",
-					arguments = {
-						{
-							abbreviation = abbr,
-							range = {
-								start = { line = start_row, character = start_col },
-								["end"] = { line = end_row, character = end_col },
-							},
-						},
-					},
-				})
-			end)
-		end, { buffer = bufnr, desc = "Emmet: wrap with abbreviation" })
-	end,
 })
 
 vim.lsp.config("lua_ls", {
