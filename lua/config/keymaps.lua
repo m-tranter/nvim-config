@@ -1,6 +1,30 @@
 ---@diagnostic disable: undefined-global
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
+
+local function navigate(dir)
+	local winnr = vim.fn.winnr()
+	vim.cmd("wincmd " .. dir)
+	-- if winnr didn't change, we're at the edge — hand off to Sway
+	if winnr == vim.fn.winnr() then
+		local sway_dir = { h = "left", j = "down", k = "up", l = "right" }
+		vim.fn.jobstart("swaymsg focus " .. sway_dir[dir])
+	end
+end
+
+map("n", "<C-h>", function()
+	navigate("h")
+end)
+map("n", "<C-j>", function()
+	navigate("j")
+end)
+map("n", "<C-k>", function()
+	navigate("k")
+end)
+map("n", "<C-l>", function()
+	navigate("l")
+end)
+
 map("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
 map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
@@ -11,10 +35,6 @@ map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
 map("n", "<C-S-Up>", "<cmd>resize +5<CR>", opts)
 map("n", "<C-S-Down>", "<cmd>resize -5<CR>", opts)
 map("n", "<C-S-Left>", "<cmd>vertical resize -5<CR>", opts)
@@ -23,7 +43,7 @@ map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map("n", "<Leader>P", '"_diwP', opts)
 map("x", "<Leader>p", '"_dp')
-map("n", "<C-c>", ":%y+<CR>", opts)
+-- map("n", "<C-c>", ":%y+<CR>", opts)
 map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
