@@ -3,8 +3,7 @@ vim.pack.add({
 	"https://github.com/nvim-lua/plenary.nvim",
 	"https://github.com/ravitemer/mcphub.nvim",
 })
-local node_version = vim.fn.trim(vim.fn.system("node -v"))
-local mcp_hub_cmd = vim.fn.expand("~/.nvm/versions/node/" .. node_version .. "/bin/mcp-hub")
+local mcp_hub_cmd = "/home/mark/.nvm/versions/node/v24.15.0/bin/mcp-hub"
 if mcp_hub_cmd == "" then
 	vim.notify("mcphub: mcp-hub not found in PATH", vim.log.levels.ERROR)
 	return

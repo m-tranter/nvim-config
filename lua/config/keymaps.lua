@@ -42,15 +42,6 @@ map("n", "<leader>xq", function()
 		vim.notify(err, vim.log.levels.ERROR)
 	end
 end, { desc = "Quickfix List" })
--- don't overwrite yank buffer
-map({ "n", "v" }, "d", '"_d')
-map({ "n", "v" }, "c", '"_c')
-map("n", "x", '"_x')
-
--- keep originals on capital keys
-map({ "n", "v" }, "D", "d")
-map({ "n", "v" }, "C", "c")
-map("n", "X", "x")
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 map("n", "z0", "1z=", { desc = "Fix word under cursor" })

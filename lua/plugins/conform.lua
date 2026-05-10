@@ -1,6 +1,13 @@
 ---@diagnostic disable: undefined-global
 vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 require("conform").setup({
+	formatters = {
+		dx_fmt = {
+			command = "dx",
+			args = { "fmt", "--file", "$FILENAME" },
+			stdin = false,
+		},
+	},
 	formatters_by_ft = {
 		css = { "prettierd" },
 		html = { "prettierd" },
@@ -10,6 +17,7 @@ require("conform").setup({
 		json = { "prettierd" },
 		lua = { "stylua" },
 		markdown = { "prettierd" },
+		rust = { "dx_fmt" },
 		sh = { "shfmt" },
 		toml = { "taplo" },
 		typescript = { "biome", "prettierd", stop_after_first = true },
