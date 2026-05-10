@@ -111,7 +111,28 @@ vim.lsp.config("cssls", {
 })
 
 vim.lsp.config("tailwindcss", {
-	root_markers = { "postcss.config.js", "postcss.config.ts" },
+	root_markers = { "Dioxus.toml", "postcss.config.js", "postcss.config.ts" },
+	filetypes = {
+		"html",
+		"css",
+		"javascript",
+		"typescript",
+		"rust",
+		"javascriptreact",
+		"typescriptreact",
+	},
+	settings = {
+		tailwindCSS = {
+			includeLanguages = {
+				rust = "html", -- treat rust like html for completions
+			},
+			experimental = {
+				classRegex = {
+					'class\\s*:\\s*"([^"]*)"',
+				},
+			},
+		},
+	},
 })
 
 vim.lsp.config("emmet_language_server", {

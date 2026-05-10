@@ -4,10 +4,6 @@
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
       "src": "https://github.com/saghen/blink.cmp"
     },
-    "codecompanion.nvim": {
-      "rev": "bc82fbca915f28467a2e2e74e11845ce20d8017c",
-      "src": "https://github.com/olimorris/codecompanion.nvim"
-    },
     "conform.nvim": {
       "rev": "dca1a190aa85f9065979ef35802fb77131911106",
       "src": "https://github.com/stevearc/conform.nvim"
@@ -51,10 +47,6 @@
     "mason.nvim": {
       "rev": "12ddd182d9efbdc848b540f16484a583d52da0fb",
       "src": "https://github.com/mason-org/mason.nvim"
-    },
-    "mcphub.nvim": {
-      "rev": "7cd5db330f41b7bae02b2d6202218a061c3ebc1f",
-      "src": "https://github.com/ravitemer/mcphub.nvim"
     },
     "mini.nvim": {
       "rev": "be81509b7160aa02264a59789164a2e1c4a6750a",
@@ -109,10 +101,6 @@
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
-    },
-    "roslyn.nvim": {
-      "rev": "b62d1a588765f0aa1b46ed260252c9e456408835",
-      "src": "https://github.com/seblyng/roslyn.nvim"
     },
     "rustaceanvim": {
       "rev": "07f0900627f1bb2fc9ee8b5e39bb96fe40c2e0a1",
