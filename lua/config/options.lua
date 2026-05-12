@@ -1,12 +1,30 @@
 ---@diagnostic disable: undefined-global
 local opt = vim.opt
+
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+	-- Use OSC 52 over SSH
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = {
+			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+		},
+		paste = {
+			["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+			["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+		},
+	}
+	opt.clipboard = "unnamedplus"
+else
+	opt.clipboard = "unnamedplus"
+end
+
 opt.autochdir = false
 opt.autoindent = true
 opt.autoread = true
 opt.autowrite = true
 opt.backup = false
 opt.breakindent = true
-opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
 opt.cmdheight = 1
 opt.colorcolumn = "80"
 opt.completeopt = "menu,menuone,noselect"

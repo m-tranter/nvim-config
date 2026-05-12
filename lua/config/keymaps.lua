@@ -47,8 +47,9 @@ map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
 
+-- map('n', '<Leader>n', '<Cmd>Neotree toggle<CR>')
 -- Better J behavior
-vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
+map("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
 
 map("n", "<leader>xl", function()
 	local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
