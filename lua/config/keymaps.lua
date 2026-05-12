@@ -43,25 +43,27 @@ map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map("n", "<Leader>P", '"_diwP', opts)
 map("x", "<Leader>p", '"_dp')
--- map("n", "<C-c>", ":%y+<CR>", opts)
-map("i", ",", ",<c-g>u")
-map("i", ".", ".<c-g>u")
-map("i", ";", ";<c-g>u")
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
+
+-- Better J behavior
+vim.keymap.set("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
+
 map("n", "<leader>xl", function()
 	local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
 	if not success and err then
 		vim.notify(err, vim.log.levels.ERROR)
 	end
 end, { desc = "Location List" })
+
 map("n", "<leader>xq", function()
 	local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
 	if not success and err then
 		vim.notify(err, vim.log.levels.ERROR)
 	end
 end, { desc = "Quickfix List" })
+
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 map("n", "z0", "1z=", { desc = "Fix word under cursor" })
@@ -72,6 +74,8 @@ map("i", "<up>", "<nop>", { noremap = true })
 map("i", "<down>", "<nop>", { noremap = true })
 map("n", "<C-down>", "<cmd>m .+1<cr>==", { desc = "Move line down" })
 map("n", "<C-up>", "<cmd>m .-2<cr>==", { desc = "Move line up" })
+map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 map("n", "<Leader>w", "<C-w>v", { desc = "Vertical split" })
 map("n", "<C-d>", "<C-d>zz", { desc = "move down and recenter" })
 map("n", "<C-u>", "<C-u>zz", { desc = "move up and recenter" })
@@ -80,6 +84,7 @@ map("n", "n", "nzzzv", { desc = "Next search item and recenter" })
 map({ "n", "v", "o" }, "Q", "<Nop>", { desc = "Disable Q" })
 map("n", "<Leader>a", "ggVG", { desc = "Select entire buffer" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Remove search highlights" })
+
 map("c", "w", function()
 	if vim.bo.filetype == "neo-tree" then
 		return "<C-c><cmd>Neotree close<cr>"

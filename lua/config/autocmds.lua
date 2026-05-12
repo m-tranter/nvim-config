@@ -6,7 +6,6 @@ end
 -- go to last loc when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
 	callback = function(event)
-		local exclude = { "gitcommit" } -- don't remember position in commit messages
 		local mark = vim.api.nvim_buf_get_mark(event.buf, '"')
 		local lcount = vim.api.nvim_buf_line_count(event.buf)
 		if mark[1] > 0 and mark[1] <= lcount then
@@ -145,5 +144,6 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Common mistypes ...
 vim.api.nvim_create_user_command("W", "w", {})
 vim.api.nvim_create_user_command("Q", "q", {})
-vim.api.nvim_create_user_command("Db", "<line1>,<line2>g/^$/d", { range = "%" })
 vim.api.nvim_create_user_command("Wq", "wq", {})
+-- Delete blank lines
+vim.api.nvim_create_user_command("Db", "<line1>,<line2>g/^$/d", { range = "%" })

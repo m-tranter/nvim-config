@@ -62,39 +62,7 @@ hi("StatusNorm", { guibg = NONE, guifg = NONE })
 hi("StatusLocation", { guibg = palette.soft_violet, guifg = palette.light_gray })
 hi("StatusPercent", { guibg = palette.teal, guifg = palette.dark_gray, gui = "bold" })
 local fn = vim.fn
--- Git repo/branch with caching - uses gitsigns buffer variables for performance
-local function get_git_branch()
-	local branch = vim.b.gitsigns_head
-	if not branch or branch == "" then
-		return ""
-	end
-	-- Get repo name from gitsigns status dict if available
-	local gs = vim.b.gitsigns_status_dict
-	if gs and gs.root then
-		-- Extract repo name from the root path
-		local repo_name = vim.fn.fnamemodify(gs.root, ":t")
-		return repo_name .. "/" .. branch
-	end
-	return branch
-end
-local function build_git_diff()
-	local gs = vim.b.gitsigns_status_dict or {}
-	local added = gs.added or 0
-	local changed = gs.changed or 0
-	local removed = gs.removed or 0
-	local diff_str = ""
-	if added > 0 then
-		diff_str = diff_str .. "%#StatusDiffAdd# " .. added .. " "
-	end
-	if changed > 0 then
-		diff_str = diff_str .. "%#StatusDiffChange# " .. changed .. " "
-	end
-	if removed > 0 then
-		diff_str = diff_str .. "%#StatusDiffDelete# " .. removed .. " "
-	end
-	-- reset to StatusLine for everything that follows
-	return diff_str .. "%#StatusLine#"
-end
+
 -- Diagnostics symbols
 local function get_diagnostics()
 	if not vim.diagnostic then
@@ -140,15 +108,7 @@ local function get_file_icon()
 	local icon = icons.get_icon(f, e, { default = true })
 	return icon and icon .. " " or ""
 end
--- Word count & reading time
-local function word_reading()
-	local ft = vim.bo.filetype
-	if ft:match("md") or ft:match("markdown") or ft == "text" then
-		local w = fn.wordcount().words or 0
-		return w .. "w " .. " " .. math.ceil(w / 200) .. "m"
-	end
-	return ""
-end
+
 -- Mode icons
 local mode_icons = {
 	n = "N",
@@ -167,17 +127,7 @@ function M.build()
 	-- A: mode
 	local m = fn.mode()
 	st = st .. "%#StatusMode# " .. (mode_icons[m] or m) .. " " .. "%#StatusModeToNorm#"
-	-- B: git
-	-- local br = get_git_branch()
-	-- if br ~= "" then
-	-- 	st = st .. "%#StatusGit# " .. " " .. br .. " " .. "%#StatusGitToNorm#"
-	-- 	local git_diff = build_git_diff()
-	-- 	if git_diff ~= "" then
-	-- 		st = st .. git_diff .. "%#StatusGitToNorm#"
-	-- 	end
-	-- end
 	-- C: filename
-	-- local fnm = fn.expand("%:t")
 	local fnm = fn.expand("%:.")
 	if fnm ~= "" then
 		st = st .. "%#StatusFile# " .. fnm .. " " .. (vim.bo.modified and "+" or "") .. "%#StatusFileToNorm#"
@@ -194,20 +144,8 @@ function M.build()
 	if ft ~= "" then
 		st = st .. "%#StatusType# " .. get_file_icon() .. ft .. "%#StatusTypeToNorm#"
 	end
-	-- Y: word/reading
-	-- local wr = word_reading()
-	-- if wr ~= "" then
-	-- 	st = st .. "%#StatusBuffer# " .. " " .. wr
-	-- end
 	-- Z: encoding, format, location, percent
-	st = st
-		.. "%#StatusBuffer# "
-		-- .. vim.bo.fileencoding
-		-- .. " "
-		-- .. vim.bo.fileformat
-		.. " "
-		.. "%#StatusLocation# %l:%c "
-		.. "%#StatusPercent# %p%% "
+	st = st .. "%#StatusBuffer# " .. " " .. "%#StatusLocation# %l:%c " .. "%#StatusPercent# %p%% "
 	return st
 end
 vim.opt.laststatus = 3 -- global statusline
